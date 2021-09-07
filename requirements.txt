@@ -1,0 +1,9 @@
+Flask
+psutil
+pyjwt<2.0
+cryptography
+gunicorn
+flask_sqlalchemy
+psycopg2-binary>=2.8
+Flask-Migrate
+python-dotenv

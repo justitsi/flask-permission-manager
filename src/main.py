@@ -4,9 +4,10 @@ from models.models import db
 import os
 from dotenv import load_dotenv
 
-
 # import routes
 from liveliness.liveliness import liveliness_blueprint
+from role.role import role_blueprint
+from permission.permission import permission_blueprint
 
 
 # Load env variables
@@ -19,9 +20,8 @@ DB_PASS = os.getenv('DB_PASS')
 
 app = flask.Flask(__name__)
 
-
 @app.before_first_request
-def create_tables():
+def startup_project():
     db.create_all()
 
 
@@ -30,11 +30,13 @@ def create_tables():
 def home():
     return {
         "message": "Currently supported endpoints",
-        "endpoints": ["/liveliness"]
+        "endpoints": ["/liveliness, /role, /permission"]
     }
 
 
 app.register_blueprint(liveliness_blueprint, url_prefix='/liveliness')
+app.register_blueprint(role_blueprint, url_prefix='/role')
+app.register_blueprint(permission_blueprint, url_prefix='/permission')
 
 
 app.config["DEBUG"] = True

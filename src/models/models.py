@@ -5,21 +5,19 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'permissions_user'
     id = db.Column(db.Integer, primary_key=True)
-    isAdmin = db.Column(db.Boolean, nullable=False)
     roles = db.relationship('Role', secondary = 'permissions_role_user', backref="users", lazy="select")
 
     def __repr__(self):
         return '<User %r>' % self.id
 
-    def __init__(self, id, isAdmin, roles):
+    def __init__(self, id, roles):
         self.id = id
-        self.isAdmin = isAdmin
         self.roles = roles
+
 
     def jsonify(self):
         data = {
             'id': self.id,
-            'isAdmin': self.isAdmin,
             'roles': slef.roles
         }
         return (data)
@@ -41,10 +39,11 @@ class Role(db.Model):
     def __repr__(self):
         return '<Role %r>' % self.id
 
-    def __init__(self, id, name, namePretty):
+    def __init__(self, id, name, namePretty, permissions):
         self.id = id
         self.name = name
         self.namePretty = namePretty
+        self.permissions = permissions
 
     def jsonify(self):
         permissions = self.permissions

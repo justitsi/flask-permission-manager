@@ -56,3 +56,11 @@ def validateJWT(request):
         return payload
     except:
         return False
+
+
+def createJWTToken(data):
+    tokenInfo = data
+
+    token = jwt.encode(tokenInfo, JWT_PRIVATE_KEY,
+                       algorithm='RS512').decode('utf-8')
+    return token

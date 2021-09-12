@@ -50,6 +50,10 @@ def manage_roles(role_id):
             valid_perms = getValidPermissions(request.json["role_permissions"])
             role = Role.query.filter_by(id=role_id).first()
 
+            if (int(role_id) == 1 or int(role_id) == 2):
+                if not (role.name == request.json["role_name"]):
+                    return generateError(400, "Cannot change role names for protected roles user and admin")
+
             if (role):
                 try:
                     role.name = request.json["role_name"]
@@ -75,14 +79,17 @@ def manage_roles(role_id):
                 db.session.commit()
                 return generateResponse("Role created")
         if (request.method == 'DELETE'):
-            role = Role.query.filter_by(id=role_id).first()
-            if (role):
-                db.session.delete(role)
-                db.session.commit()
-
-                return generateResponse("Role deleted")
+            if (int(role_id) == 1 or int(role_id) == 2):
+                return generateError (400, "Cannot delete protected roles user and admin")
             else:
-                return generateError(404, "Role not found")
+                role = Role.query.filter_by(id=role_id).first()
+                if (role):
+                    db.session.delete(role)
+                    db.session.commit()
+
+                    return generateResponse("Role deleted")
+                else:
+                    return generateError(404, "Role not found")
     except:
         return generateError(500, "Could not proccess request")
 

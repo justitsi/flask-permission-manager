@@ -51,8 +51,18 @@ def get_permissions():
                 if (exists == False):
                     permissions.append(Permission.jsonify(perm))
         
+        roles_info_basic = []
+        for role in roles:
+            role_info = {
+                'id': role['id'],
+                'name': role['name'],
+                'namePretty': role['namePretty']
+            }
+            roles_info_basic.append(role_info)
+
         token = createJWTToken ({
             'permissions': permissions,
+            'roles': roles_info_basic,
             'userID': valid["userID"],
             "issued": str(datetime.now())
         })

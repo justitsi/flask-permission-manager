@@ -35,8 +35,8 @@ def manage_roles(role_id):
     
     if (not valid):
         return generateError(400, "Invalid jwt_token")
-    # if (not userIsAdmin(valid["userID"])):
-    #     return generateError(403, "User is not admin")
+    if (not userIsAdmin(valid["userID"])):
+        return generateError(403, "User is not admin")
 
     try:
         if (request.method == 'GET'):

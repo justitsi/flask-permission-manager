@@ -31,7 +31,10 @@ def generateError(code, message):
 def userIsAdmin (user_id):
     user = User.query.filter_by(id=user_id).first()
     if (user):
-        return user.isAdmin
+        for role in user.roles:
+            if role.name == 'admin':
+                return True
+        return False
     else:
         return False
 

@@ -19,7 +19,6 @@ RUN chmod +x /project/startup.sh
 # setup project - install requirements and copy source code and certs
 COPY requirements.txt /project/
 RUN pip3 install -r requirements.txt
-COPY ./certs /project/certs
 COPY ./src /project/src
 
 # Clear development .env and copy production environment settings to container

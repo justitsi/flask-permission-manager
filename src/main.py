@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 # import routes
 from liveliness.liveliness import liveliness_blueprint
 from auth.auth import auth_blueprint
+from users.users import users_blueprint
 from role.role import role_blueprint
 from permission.permission import permission_blueprint
 
@@ -26,20 +27,30 @@ def startup_project():
     db.create_all()
     # pre-create user and admin roles
     try:
-        role = Role(
-                id=1,
-                name='admin',
-                namePretty='Administrator'
-                )
-        db.session.add(role)
-        db.session.commit()
-        role = Role(
-                id=2,
-                name='user',
-                namePretty='User'
-                )
-        db.session.add(role)
-        db.session.commit()
+        # check if admin role exists
+        role = Role.query.filter_by(name="admin").first()
+        if (not role):
+            role = Role(
+                    id=1,
+                    name='admin',
+                    namePretty='Administrator',
+                    permissions=[]
+                    )
+            db.session.add(role)
+            db.session.commit()
+
+        # check if user role exists
+        role = Role.query.filter_by(name="user").first()
+        if (not role):
+            role = Role(
+                    id=2,
+                    name='user',
+                    namePretty='User',
+                    permissions=[]
+                    )
+            db.session.add(role)
+            db.session.commit()
+
     except:
         db.session.rollback()
 
@@ -57,6 +68,7 @@ app.register_blueprint(liveliness_blueprint, url_prefix='/liveliness')
 app.register_blueprint(role_blueprint, url_prefix='/role')
 app.register_blueprint(permission_blueprint, url_prefix='/permission')
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
+app.register_blueprint(users_blueprint, url_prefix='/users')
 
 
 app.config["DEBUG"] = True

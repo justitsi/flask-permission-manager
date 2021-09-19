@@ -16,9 +16,18 @@ class User(db.Model):
 
 
     def jsonify(self):
+        roles = self.roles
+        roles_json = []
+
+        for role in roles:
+            roles_json.append ({
+                "id": role.id,
+                "name": role.name
+        })
+
         data = {
             'id': self.id,
-            'roles': slef.roles
+            'roles': roles_json
         }
         return (data)
 

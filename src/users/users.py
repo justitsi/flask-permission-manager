@@ -62,6 +62,10 @@ def bindRoleToUsers (role_id):
             if (action != "remove"):
                 return generateError(400, 'Valid values for the `action` field are `add` and `remove`')
 
+        # admins cannot remove their own admin role
+        if (role.name == "admin"):
+            users_to_add.remove(valid["userID"])
+
         # figure out user information
         for user_id in users_to_add:
                 user_db_entry = User.query.filter_by(id = user_id).first()

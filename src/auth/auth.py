@@ -60,21 +60,29 @@ def get_permissions():
             }
             roles_info_basic.append(role_info)
 
+        token_issued_time = datetime.now()
+        token_expiry_time = token_issued_time + timedelta(days=30)
+
         token = createJWTToken ({
             'permissions': permissions,
             'roles': roles_info_basic,
             'userID': valid["userID"],
-            "issued": str(datetime.now())
+            "issued": str(token_issued_time),
+            "expires": str(token_expiry_time)
         })
 
-        response = make_response({   
+        response = make_response({
+            "data":{   
                 "userID": valid["userID"],
                 "roles": roles,
                 "perms": permissions,
+                "issued": str(token_issued_time),
+                "expires": str(token_expiry_time),
                 "token": token
-            })
+            },
+            "status": 200
+        })
         response.set_cookie('jwt_permissions', token, max_age=timedelta(days=30))
-        return response
-        
+        return response  
     except:
         return generateError(500, "Could not proccess request")

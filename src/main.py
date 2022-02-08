@@ -59,8 +59,11 @@ def startup_project():
 @app.route('/', methods=['GET'])
 def home():
     return {
-        "message": "Currently supported endpoints",
-        "endpoints": ["/liveliness, /role, /permission"]
+        "data":{
+            "message": "Currently supported endpoints",
+            "endpoints": ["/liveliness, /role, /permission, /auth, /users"]
+        },
+        "status": 200
     }
 
 

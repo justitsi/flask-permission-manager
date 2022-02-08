@@ -15,9 +15,9 @@ services:
             - "5432:5432"
     phppgadmin:
         image: docker.io/bitnami/phppgadmin:7
-        ports:
-            - '5080:8080'
-            - '50443:8443'
+        # ports:
+        #     - '5080:8080'
+        #     - '50443:8443'
         environment:
             - DATABASE_HOST=postgresdb
         depends_on:

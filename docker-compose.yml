@@ -9,8 +9,6 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
             - PGDATA=/var/lib/postgresql/data/database
-        volumes:
-            - ./db_data:/var/lib/postgresql/data/database
         ports:
             - "5432:5432"
     phppgadmin:

@@ -1,5 +1,6 @@
 # import libraries
 import flask
+from flask_cors import CORS
 from models.models import db, Role
 import os
 from dotenv import load_dotenv
@@ -21,6 +22,16 @@ DB_PASS = os.getenv('DB_PASS')
 
 
 app = flask.Flask(__name__)
+api_cors_headers = {
+    "origins": [
+        "localhost:3000",
+        "http://localhost:3000",
+    ],
+    "methods": ["OPTIONS", "DELETE", "GET", "POST"],
+    "allow_headers": ["Authorization", "Content-Type"]
+}
+cors = CORS(app, resources={"/*": api_cors_headers}, supports_credentials=True)  # nopep8
+
 
 @app.before_first_request
 def startup_project():
@@ -31,11 +42,11 @@ def startup_project():
         role = Role.query.filter_by(name="admin").first()
         if (not role):
             role = Role(
-                    id=1,
-                    name='admin',
-                    namePretty='Administrator',
-                    permissions=[]
-                    )
+                id=1,
+                name='admin',
+                namePretty='Administrator',
+                permissions=[]
+            )
             db.session.add(role)
             db.session.commit()
 
@@ -43,11 +54,11 @@ def startup_project():
         role = Role.query.filter_by(name="user").first()
         if (not role):
             role = Role(
-                    id=2,
-                    name='user',
-                    namePretty='User',
-                    permissions=[]
-                    )
+                id=2,
+                name='user',
+                namePretty='User',
+                permissions=[]
+            )
             db.session.add(role)
             db.session.commit()
 
@@ -59,7 +70,7 @@ def startup_project():
 @app.route('/', methods=['GET'])
 def home():
     return {
-        "data":{
+        "data": {
             "message": "Currently supported endpoints",
             "endpoints": ["/liveliness, /role, /permission, /auth, /users"]
         },

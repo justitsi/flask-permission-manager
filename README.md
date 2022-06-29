@@ -76,6 +76,14 @@ If a POST request is sent to a role that already exists, the role with that ID w
 ```
 Where, `action` is either `add` or `remove` for adding or removing the specified role to the list of users, and `users` is a list of integers that are valid `userID`s. In case a specific `userID` is invalid, the changes will not be attempted on that user. It should be noted that when attempting to remove the `admin` role, the client making the change will not be able to remove the `admin` role from their own `user` entry. 
 
+* `POST` `/users/register` - this endpoint is used for mass registering users by id. It acceptrs an array of `userIDs` and registeres all of them with the default `user` role in the system. The `POST` request body should follow the format:
+```
+{
+	"users":[int]
+}
+``` 
+Where `users` is an array of user IDs. It should be noted that only logged in users registered as an `admin` can perform this action.*Users already registered in the system will not be re-registered!* - if a supplied `userID` belongs to a `user` registered in the sytem, they will not be affected.
+
 * `POST` `/user/unregister` - allows for deleting user entries from the system. This route expects a request body of the following format:
 ```
 {
